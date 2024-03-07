@@ -1,115 +1,208 @@
+<!-- author: amin -->
+
 <?php
 
-class Figuur {
-    protected $kleur;
+class Figure {
+    protected $color;
+    protected $border;
 
-    public function __construct($kleur) {
-        $this->kleur = $kleur;
+    public function __construct($color, $border) {
+        $this->color = $color;
+        $this->border = $border;
     }
 
-    public function getKleur() {
-        return $this->kleur;
-    }
-
-    public function setKleur($kleur) {
-        $geldige_kleuren = ['rood', 'groen', 'blauw', 'geel', 'oranje', 'paars'];
-        if (in_array($kleur, $geldige_kleuren)) {
-            $this->kleur = $kleur;
-        } else {
-            echo "Ongeldige kleur!";
-        }
+    public function draw() {
+        // This method will be implemented in the child classes
     }
 }
 
-class Rechthoek extends Figuur {
+class Square extends Figure {
+    private $side;
+
+    public function __construct($color, $border, $side) {
+        parent::__construct($color, $border);
+        $this->side = $side;
+    }
+
+    public function draw() {
+        // SVG code for drawing a square
+        $svg_code = "<rect width='{$this->side}' height='{$this->side}' x='10' y='10' fill='{$this->color}' stroke='{$this->border}' />";
+        return $svg_code;
+    }
+}
+
+class Circle extends Figure {
+    private $radius;
+
+    public function __construct($color, $border, $radius) {
+        parent::__construct($color, $border);
+        $this->radius = $radius;
+    }
+
+    public function draw() {
+        // SVG code for drawing a circle
+        $svg_code = "<circle cx='50' cy='50' r='{$this->radius}' fill='{$this->color}' stroke='{$this->border}' />";
+        return $svg_code;
+    }
+}
+
+class Rectangle extends Figure {
     private $width;
     private $height;
-    private $x;
-    private $y;
-    private $rx;
-    private $ry;
 
-    public function __construct($kleur, $width, $height, $x, $y, $rx, $ry) {
-        parent::__construct($kleur);
+    public function __construct($color, $border, $width, $height) {
+        parent::__construct($color, $border);
         $this->width = $width;
         $this->height = $height;
-        $this->x = $x;
-        $this->y = $y;
-        $this->rx = $rx;
-        $this->ry = $ry;
     }
 
-    public function teken() {
-        return "<svg width='{$this->width}' height='{$this->height}' xmlns='http://www.w3.org/2000/svg'>
-                    <rect width='{$this->width}' height='{$this->height}' x='{$this->x}' y='{$this->y}' rx='{$this->rx}' ry='{$this->ry}' fill='{$this->getKleur()}' />
-                </svg>";
+    public function draw() {
+        // SVG code for drawing a rectangle
+        $svg_code = "<rect width='{$this->width}' height='{$this->height}' x='10' y='10' fill='{$this->color}' stroke='{$this->border}' />";
+        return $svg_code;
     }
 }
 
-class Cirkel extends Figuur {
-    private $r;
-    private $cx;
-    private $cy;
-    private $stroke;
-    private $stroke_width;
+class Triangle extends Figure {
+    private $side1;
+    private $side2;
+    private $side3;
 
-    public function __construct($kleur, $r, $cx, $cy, $stroke, $stroke_width) {
-        parent::__construct($kleur);
-        $this->r = $r;
-        $this->cx = $cx;
-        $this->cy = $cy;
-        $this->stroke = $stroke;
-        $this->stroke_width = $stroke_width;
+    public function __construct($color, $border, $side1, $side2, $side3) {
+        parent::__construct($color, $border);
+        $this->side1 = $side1;
+        $this->side2 = $side2;
+        $this->side3 = $side3;
     }
 
-    public function teken() {
-        return "<svg height='100' width='100' xmlns='http://www.w3.org/2000/svg'>
-                    <circle r='{$this->r}' cx='{$this->cx}' cy='{$this->cy}' stroke='{$this->stroke}' stroke-width='{$this->stroke_width}' fill='{$this->getKleur()}' />
-                </svg>";
+    public function draw() {
+        // SVG code for drawing a triangle
+        $svg_code = "<polygon points='200,10 250,190 150,190' fill='{$this->color}' stroke='{$this->border}' />";
+        return $svg_code;
     }
 }
 
-class Driehoek extends Figuur {
-    private $points;
-    private $stroke;
-    private $stroke_width;
-
-    public function __construct($kleur, $points, $stroke, $stroke_width) {
-        parent::__construct($kleur);
-        $this->points = $points;
-        $this->stroke = $stroke;
-        $this->stroke_width = $stroke_width;
-    }
-
-    public function teken() {
-        return "<svg height='220' width='500' xmlns='http://www.w3.org/2000/svg'>
-                    <polygon points='{$this->points}' style='fill:{$this->getKleur()};stroke:{$this->stroke};stroke-width:{$this->stroke_width}' />
-                </svg>";
-    }
-}
-
-// Vierkanten bovenaan
-$vierkant = new Rechthoek("blue", 100, 100, 50, 50, 0, 0);
-echo $vierkant->teken();
-echo $vierkant->teken();
-echo $vierkant->teken();
-echo $vierkant->teken();
-
-// Cirkels
-$cirkel = new Cirkel("red", 45, 50, 50, "green", 3);
-echo $cirkel->teken();
-echo $cirkel->teken();
-echo $cirkel->teken();
-
-// Rechthoeken
-$rechthoek = new Rechthoek("yellow", 150, 50, 50, 0, 0, 0);
-echo $rechthoek->teken();
-echo $rechthoek->teken();
-echo $rechthoek->teken();
-
-// Driehoeken
-$driehoek = new Driehoek("lime", "50,10 100,190 0,190", "purple", 3);
-echo $driehoek->teken();
-echo $driehoek->teken();
-echo $driehoek->teken();
 ?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Three in a row</title>
+</head>
+<body>
+
+    <svg width="100" height="100">
+        <?php
+       
+        $square = new Square("lightblue", "black", 100);
+        echo $square->draw() ;
+     
+     ?>
+    </svg>
+    <svg width="100" height="100">
+        <?php
+       
+       $square = new Square("purple", "black", 100);
+       echo $square->draw() ;
+        
+        
+        ?>
+    </svg>
+    <svg width="100" height="100">
+        <?php
+       
+       $square = new Square("green", "black", 100);
+       echo $square->draw() ;
+        echo"<br>";
+        
+        ?>
+    </svg>
+        
+
+    <svg width="100" height="100">
+        <?php
+
+      $circle = new Circle("yellow", "black", 50);
+      echo $circle->draw();
+        ?>
+
+    </svg>
+
+    <svg width="100" height="100">
+        <?php
+
+      $circle = new Circle("yellow", "black", 50);
+      echo $circle->draw();
+        ?>
+
+    </svg>
+
+    <svg width="100" height="100">
+        <?php
+
+      $circle = new Circle("yellow", "black", 50);
+      echo $circle->draw();
+      echo"<br>";
+        ?>
+
+    </svg>
+
+
+    <svg width="150" height="100">
+        <?php
+            $rectangle = new Rectangle("green", "black", 200, 100);
+            echo $rectangle->draw();
+                
+                ?>
+    </svg>
+        
+    <svg width="150" height="100">
+        <?php
+            $rectangle = new Rectangle("green", "black", 200, 100);
+            echo $rectangle->draw();
+                
+                ?>
+    </svg>
+        
+    <svg width="150" height="100">
+        <?php
+            $rectangle = new Rectangle("green", "black", 200, 100);
+            echo $rectangle->draw();
+            echo"<br>";
+                ?>
+    </svg>
+        
+    <svg width="150" height="100">
+        <?php
+             
+     $triangle = new Triangle("blue", "black", 200, 100, 100);
+     echo $triangle->draw();
+                
+                ?>
+    </svg> 
+
+    <svg width="150" height="100">
+        <?php
+             
+     $triangle = new Triangle("blue", "black", 200, 100, 100);
+     echo $triangle->draw();
+                
+                ?>
+    </svg> 
+    
+
+    <svg width="150" height="100">
+        <?php
+             
+     $triangle = new Triangle("blue", "black", 200, 100, 100);
+     echo $triangle->draw();
+                
+                ?>
+    </svg> 
+    
+    
+ 
+</body>
+</html>
