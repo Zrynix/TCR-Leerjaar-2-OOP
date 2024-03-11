@@ -1,5 +1,4 @@
 <?php
-// author:amin
 abstract class Person {
     private $name;
     private $eyeColor;
