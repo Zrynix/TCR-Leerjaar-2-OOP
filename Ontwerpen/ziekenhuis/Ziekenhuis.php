@@ -1,110 +1,136 @@
 <?php
-
-// Namespace
-namespace Hospital;
-
-// Abstract class
+// author:amin
 abstract class Person {
-    // Properties
-    private string $name;
-    private string $eyeColor;
-    private string $hairColor;
-    private float $height;
-    private float $weight;
-    private string $role;
-
-    // Constructor
-    public function __construct(string $name, string $eyeColor, string $hairColor, float $height, float $weight, string $role) {
+    private $name;
+    private $eyeColor;
+    private $hairColor;
+    private $height;
+    private $weight;
+ 
+    public function __construct($name, $eyeColor, $hairColor, $height, $weight) {
         $this->name = $name;
         $this->eyeColor = $eyeColor;
         $this->hairColor = $hairColor;
         $this->height = $height;
         $this->weight = $weight;
-        $this->role = $role;
     }
-
-    // Getter methods
-    public function getName(): string {
+ 
+    public function getName() {
         return $this->name;
     }
-
-    public function getEyeColor(): string {
+ 
+    public function getEyeColor() {
         return $this->eyeColor;
     }
-
-    public function getHairColor(): string {
+ 
+    public function getHairColor() {
         return $this->hairColor;
     }
-
-    public function getHeight(): float {
+ 
+    public function getHeight() {
         return $this->height;
     }
-
-    public function getWeight(): float {
+ 
+    public function getWeight() {
         return $this->weight;
     }
-
-    public function getRole(): string {
-        return $this->role;
+ 
+    abstract public function determineRole();
+}
+ 
+class Patient extends Person {
+    public function determineRole() {
+        return "Patient";
     }
 }
-
-// Abstract class
+ 
 abstract class Staff extends Person {
-    // Properties
-    private float $hourlyRate;
-
-    // Constructor
-    public function __construct(string $name, string $eyeColor, string $hairColor, float $height, float $weight, string $role, float $hourlyRate) {
-        parent::__construct($name, $eyeColor, $hairColor, $height, $weight, $role);
+    abstract public function calculateSalary($hoursWorked);
+}
+ 
+class Doctor extends Staff {
+    private $hourlyRate;
+ 
+    public function __construct($name, $eyeColor, $hairColor, $height, $weight, $hourlyRate) {
+        parent::__construct($name, $eyeColor, $hairColor, $height, $weight);
         $this->hourlyRate = $hourlyRate;
     }
-
-    // Getter method
-    public function getHourlyRate(): float {
-        return $this->hourlyRate;
+ 
+    public function calculateSalary($hoursWorked) {
+        return $hoursWorked * $this->hourlyRate;
     }
-
-    // Abstract method
-    abstract public function setSalary(float $hoursWorked): float;
-}
-
-// Child class
-class Doctor extends Staff {
-    // Method implementation
-    public function setSalary(float $hoursWorked): float {
-        return $hoursWorked * $this->getHourlyRate();
+ 
+    public function determineRole() {
+        return "Doctor";
     }
 }
-
-// Child class
+ 
+ 
 class Nurse extends Staff {
-    // Method implementation
-    public function setSalary(float $hoursWorked): float {
+    private $weeklySalary;
+ 
+    public function __construct($name, $eyeColor, $hairColor, $height, $weight, $weeklySalary) {
+        parent::__construct($name, $eyeColor, $hairColor, $height, $weight);
+        $this->weeklySalary = $weeklySalary;
+    }
+ 
+    public function calculateSalary($hoursWorked) {
+        // Hier wordt alleen de bonus van afspraken toegevoegd, het vaste salaris wordt niet berekend
         return $hoursWorked * $this->getHourlyRate();
     }
-}
-
-// Child class
-class Patient extends Person {
-    // Constructor
-    public function __construct(string $name, string $eyeColor, string $hairColor, float $height, float $weight) {
-        parent::__construct($name, $eyeColor, $hairColor, $height, $weight, "Patient");
+ 
+    public function getHourlyRate() {
+        return $this->weeklySalary / 40; // Aannemend dat een werkweek 40 uur is
+    }
+ 
+    public function determineRole() {
+        return "Nurse";
     }
 }
-
-// Usage
-$doctor = new Doctor("Dr. Smith", "Blue", "Brown", 180.0, 75.0, "Doctor", 50.0);
-echo "Doctor's Name: " . $doctor->getName() . "<br>";
-echo "Doctor's Role: " . $doctor->getRole() . "<br>";
-echo "Doctor's Hourly Rate: $" . $doctor->getHourlyRate() . " per hour<br><br>";
-
-$nurse = new Nurse("Nurse Jane", "Green", "Blonde", 170.0, 65.0, "Nurse", 30.0);
-echo "Nurse's Name: " . $nurse->getName() . "<br>";
-echo "Nurse's Role: " . $nurse->getRole() . "<br>";
-echo "Nurse's Hourly Rate: $" . $nurse->getHourlyRate() . " per hour<br><br>";
-
-$patient = new Patient("John Doe", "Brown", "Black", 175.0, 70.0);
-echo "Patient's Name: " . $patient->getName() . "<br>";
-echo "Patient's Role: " . $patient->getRole() . "<br>";
-
+ 
+class Appointment {
+    private $doctor;
+    private $patient;
+    private $nurse;
+    private $startTime;
+    private $endTime;
+ 
+    public function __construct($doctor, $patient, $startTime, $endTime, $nurse = null) {
+        $this->doctor = $doctor;
+        $this->patient = $patient;
+        $this->nurse = $nurse;
+        $this->startTime = $startTime;
+        $this->endTime = $endTime;
+    }
+ 
+    public static function calculateDuration($startTime, $endTime) {
+        // Bereken de duur van de afspraak in uren
+        $duration = $endTime->diff($startTime)->h;
+        return $duration;
+    }
+ 
+    public function calculateCost() {
+        $duration = self::calculateDuration($this->startTime, $this->endTime);
+        $doctorSalary = $this->doctor->calculateSalary($duration);
+        $nurseBonus = 0;
+        if ($this->nurse) {
+            $nurseBonus = $this->nurse->calculateSalary($duration);
+        }
+        return array($doctorSalary, $nurseBonus);
+    }
+}
+ 
+// Testen
+$doctor = new Doctor("Dr. Smith", "Brown", "Black", 180, 75, 50);
+$patient = new Patient("John Doe", "Blue", "Blond", 175, 70);
+$nurse = new Nurse("Nurse Jane", "Green", "Red", 165, 60, 1000);
+ 
+$startTime = new DateTime("2024-03-07 09:00:00");
+$endTime = new DateTime("2024-03-07 11:00:00");
+ 
+$appointment = new Appointment($doctor, $patient, $startTime, $endTime, $nurse);
+$cost = $appointment->calculateCost();
+ 
+echo "Doctor's salary: $" . $cost[0] . "\n";
+echo "Nurse's bonus: $" . $cost[1] . "\n";
+?>

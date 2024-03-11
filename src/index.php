@@ -17,8 +17,9 @@
 	<h3>Welcome op de HOME-pagina!</h3>
 	<br />
 	<?php
+    require "../vendor/autoload.php";
 
-require_once 'classes/user.php';
+require_once 'classes/user.php';   
 
 $user = new User();
 
