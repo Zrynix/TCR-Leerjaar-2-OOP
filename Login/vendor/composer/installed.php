@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => 'aoura/login',
-        'pretty_version' => 'dev-master',
-        'version' => 'dev-master',
-        'reference' => 'f37694551314fbbb44a068c806b26294fae654d0',
+        'pretty_version' => '1.0.0+no-version-set',
+        'version' => '1.0.0.0',
+        'reference' => NULL,
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -11,9 +11,9 @@
     ),
     'versions' => array(
         'aoura/login' => array(
-            'pretty_version' => 'dev-master',
-            'version' => 'dev-master',
-            'reference' => 'f37694551314fbbb44a068c806b26294fae654d0',
+            'pretty_version' => '1.0.0+no-version-set',
+            'version' => '1.0.0.0',
+            'reference' => NULL,
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
