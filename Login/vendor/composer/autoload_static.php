@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitab251a17b34ee61ce4e8ff4b8b92d600
+class ComposerStaticInit170a360cd8dfe0ff399ceec20962741d
 {
     public static $files = array (
         '6124b4c8570aa390c21fafd04a26c69f' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/deep_copy.php',
@@ -37,7 +37,7 @@ class ComposerStaticInitab251a17b34ee61ce4e8ff4b8b92d600
         ),
         'Aoura\\Login\\' => 
         array (
-            0 => __DIR__ . '/../..' . '/app',
+            0 => __DIR__ . '/../..' . '/src',
         ),
     );
 
@@ -1213,9 +1213,9 @@ class ComposerStaticInitab251a17b34ee61ce4e8ff4b8b92d600
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInitab251a17b34ee61ce4e8ff4b8b92d600::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInitab251a17b34ee61ce4e8ff4b8b92d600::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInitab251a17b34ee61ce4e8ff4b8b92d600::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit170a360cd8dfe0ff399ceec20962741d::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit170a360cd8dfe0ff399ceec20962741d::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit170a360cd8dfe0ff399ceec20962741d::$classMap;
 
         }, null, ClassLoader::class);
     }

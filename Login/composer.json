@@ -5,7 +5,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Login\\": "app/"
+            "Login\\": "src/"
         }
     },
     "authors": [
