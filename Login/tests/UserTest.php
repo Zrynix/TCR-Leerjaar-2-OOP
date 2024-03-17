@@ -12,30 +12,30 @@ class UserTest extends TestCase {
 
     public function testRegisterUser(): void {
         // Test successful registration
-        $this->assertTrue($this->user->registerUser('50 lira', 'Fortnite'));
+        $this->assertTrue($this->user->registerUser('Amin', 'Auro'));
     
         // Test registration with existing username (should fail)
-        $this->assertFalse($this->user->registerUser('50 lira', 'Fortnite'));
+        $this->assertFalse($this->user->registerUser('Amin', 'Aura'));
     }
     
 
     public function testLoginUser(): void {
-        // Test successful login
-        $this->assertTrue($this->user->loginUser('Rohan', 'D'));
+        
+        $this->assertTrue($this->user->loginUser('Amin', 'G'));
 
-        // Test login with incorrect password (should fail)
-        $this->assertFalse($this->user->loginUser('Rohan', 'JK'));
+        
+        $this->assertFalse($this->user->loginUser('Amin', 'T'));
 
-        // Test login with non-existent username (should fail)
-        $this->assertFalse($this->user->loginUser('60 lira', 'Fortnite'));
+        
+        $this->assertFalse($this->user->loginUser('IDK', '5'));
     }
 
     public function testIsLoggedin(): void {
-        // Test when not logged in
+        
         $this->assertFalse($this->user->isLoggedin());
 
-        // Test after successful login
-        $this->user->loginUser('50 lira', 'Fortnite');
+    
+        $this->user->loginUser('Ark', 'Parry');
         $this->assertTrue($this->user->isLoggedin());
     }
 
